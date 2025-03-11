@@ -1,0 +1,166 @@
+/* Estilos básicos */
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Estilo del encabezado (header) */
+header {
+  grid-area: header;
+  background: #4caf50;
+  color: white;
+  padding: 1rem;
+  text-align: center;
+  justify-content: space-between;
+  align-items: center;
+  display: flex;
+}
+
+/* Estilo de los enlaces del menú de navegación */
+header nav a {
+  margin: 0 1rem; /* Añade espacio horizontal entre los enlaces */
+  color: white;
+  text-decoration: none;
+}
+
+/* Estilo para el logo */
+.logo {
+  width: 300px;
+  height: auto;
+  vertical-align: middle;
+  margin-right: 10px;
+}
+
+/* Estilo para las imágenes en la lista de datos */
+.data-icon {
+  width: 200px;
+  height: auto;
+  margin-right: 8px;
+  vertical-align: middle;
+}
+/* Contenedor principal con Grid */
+.container {
+  display: grid;
+  height: 100vh;
+  grid-template-areas:
+    'header header' /* Define la posición del header ocupando dos columnas */
+    'sidebar main' /* Define la posición del sidebar y el main en la misma fila */
+    'footer footer'; /* Define la posición del footer ocupando dos columnas */
+  grid-template-columns: 2% 98%;
+  grid-template-rows: auto 1fr auto;
+  transition: all 0.3s ease; /* Suaviza la transición del grid */
+}
+
+/* Asignación de áreas en el grid */
+.sidebar-container {
+  grid-area: sidebar;
+  height: 100%;
+  width: 50px;
+  background-color: transparent;
+}
+.sidebar {
+  position: relative;
+  left: 0;
+  top: 0;
+  background: #aeadad; /* Fondo gris claro */
+  padding: 1rem; /* Espaciado interno */
+  width: 250px;
+  height: 90%;
+  transform: translateX(-100%);
+  transition: transform 0.3s ease;
+  grid-template-rows: auto 1fr auto; /* Asegura que el sidebar/main ocupen sólo la segunda fila */
+}
+.sidebar-container:hover .sidebar {
+  transform: translateX(0);
+}
+.container:has(.sidebar-container:hover) {
+  grid-template-columns: 25% 75%; /* Ajusta la plantilla de columnas */
+}
+
+/* Estilo de la lista del sidebar */
+.sidebar ul {
+  list-style: none;
+  padding: 0;
+}
+
+.sidebar ul li {
+  margin-bottom: 1rem;
+}
+
+.sidebar ul li a {
+  text-decoration: none;
+  color: #333;
+}
+
+main {
+  grid-area: main;
+  padding: 1rem;
+}
+
+footer {
+  grid-area: footer;
+  background: #4caf50;
+  color: white;
+  text-align: center;
+  padding: 1rem;
+}
+
+/* Grid para la sección de categorías*/
+.stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+/* Estilo de las cajas de categorías */
+.stat-box {
+  background: #e0e0e0;
+  padding: 1rem;
+  text-align: center;
+  border-radius: 8px;
+}
+
+/* Flexbox para la lista de tipos de vivienda */
+.data ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  list-style: none;
+  padding: 0;
+}
+
+.data ul li {
+  background: #f4f4f4;
+  padding: 1rem;
+  border-radius: 4px;
+  text-align: center;
+}
+@media (max-width: 768px) {
+  .container {
+    grid-template-areas:
+      'header'
+      'sidebar'
+      'main'
+      'footer';
+    grid-template-columns: 1fr; /* Todo ocupa el 100% del ancho */
+    grid-template-rows: auto auto 1fr auto;
+  }
+  .container:has(.sidebar-container:hover) {
+    grid-template-columns: 100%; /* Ajusta la plantilla de columnas */
+  }
+  .sidebar-container {
+    width: 100%;
+  }
+  .sidebar {
+    transform: none;
+    height: auto;
+    width: 100%;
+  }
+
+  .stats {
+    grid-template-columns: 1fr;
+  }
+}

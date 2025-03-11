@@ -1,0 +1,90 @@
+{
+  // Use IntelliSense para saber los atributos posibles.
+  // Mantenga el puntero para ver las descripciones de los existentes atributos.
+  // Para más información, visite: https://go.microsoft.com/fwlink/?linkid=830387
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "java",
+      "name": "arrayPrueba",
+      "request": "launch",
+      "mainClass": "PROGRAMACION.arrayPrueba.arrayPrueba",
+      "projectName": "prueba-repositorio_e7518055"
+    },
+    {
+      "type": "java",
+      "name": "proyecto_Urgencias",
+      "request": "launch",
+      "mainClass": "PROGRAMACION.proyectoUrgencias.proyecto_Urgencias",
+      "projectName": "prueba-repositorio_e7518055"
+    },
+    {
+      "type": "java",
+      "name": "Main",
+      "request": "launch",
+      "mainClass": "PROGRAMACION.ejercicioEntradaSalida.Main",
+      "projectName": "prueba-repositorio_e7518055"
+    },
+    {
+      "type": "java",
+      "name": "ejemplo_Profe",
+      "request": "launch",
+      "mainClass": "nuevoProyecto.proyectoUrgencias.ejemplo_Profe",
+      "projectName": "prueba-repositorio_e7518055"
+    },
+    {
+      "type": "java",
+      "name": "Bucles",
+      "request": "launch",
+      "mainClass": "nuevoProyecto.ExplicacionBucles.Bucles",
+      "projectName": "prueba-repositorio_e7518055"
+    },
+    {
+      "type": "java",
+      "name": "Bucles",
+      "request": "launch",
+      "mainClass": "nuevoProyecto.Bucles.Bucles",
+      "projectName": "prueba-repositorio_e7518055"
+    },
+    {
+      "type": "java",
+      "name": "RecomendadorDepeliculas",
+      "request": "launch",
+      "mainClass": "nuevoProyecto.RecomendadorDePeliculas.RecomendadorDepeliculas",
+      "projectName": "prueba-repositorio_e7518055"
+    },
+    {
+      "type": "java",
+      "name": "Pelicula",
+      "request": "launch",
+      "mainClass": "nuevoProyecto.Pelicula.Pelicula",
+      "projectName": "prueba-repositorio_e7518055"
+    },
+    {
+      "type": "java",
+      "name": "Main",
+      "request": "launch",
+      "mainClass": "nuevoProyecto.entradaTexto.Main",
+      "projectName": "prueba-repositorio_e7518055"
+    },
+    {
+      "type": "java",
+      "name": "Main",
+      "request": "launch",
+      "mainClass": "nuevoProyecto.ejercicioEntradaSalida.Main",
+      "projectName": "prueba-repositorio_e7518055"
+    },
+    {
+      "type": "java",
+      "name": "Main",
+      "request": "launch",
+      "mainClass": "Main",
+      "projectName": "prueba-repositorio_e7518055"
+    },
+    {
+      "type": "jdk",
+      "request": "launch",
+      "name": "Launch Java App"
+    }
+  ]
+}
