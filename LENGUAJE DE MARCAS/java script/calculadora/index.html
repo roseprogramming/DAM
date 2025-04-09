@@ -66,7 +66,7 @@
             <option value="modulo">Módulo (%)</option>
           </select>
           <input type="number" id="num2" placeholder="Número 2" required />
-          <button type="button">Calcular</button>
+          <button type="button" onclick="calcular()">Calcular</button>
         </form>
         <p class="resultado" id="resultado"></p>
       </div>
@@ -87,7 +87,7 @@
             <option value="<=">Menor o Igual &lt;=</option>
           </select>
           <input type="text" id="valor2" placeholder="Valor 2" />
-          <button type="button">Comparar</button>
+          <button type="button" onclick="">Comparar</button>
         </form>
         <p class="resultado" id="resultadoComparacion"></p>
       </div>
@@ -98,11 +98,33 @@
         let num2 = parseFloat(document.getElementById('num2').value)
         let operacion = document.getElementById('operacion').value
         let resultado
-      }
-      switch (operacion) {
-        case 'sumar':
-          resultado = num1 + num2
-          break
+
+        switch (operacion) {
+          case 'sumar':
+            resultado = num1 + num2
+            break
+          case 'restar':
+            resultado = num1 - num2
+            break
+          case 'multiplicar':
+            resultado = num1 * num2
+            break
+          case 'dividir':
+            if (num2 === 0) {
+              document.getElementById('resultado').innerText =
+                'No se puede dividir por 0'
+              return
+            }
+            resultado = num1 / num2
+            break
+          case 'modulo':
+            resultado = num1 % num2
+            break
+          default:
+            resultado = 'operación no válida'
+        }
+        document.getElementById('resultado').innerText =
+          'RESULTADO: ' + resultado
       }
 
       function calculadora(a, b) {
