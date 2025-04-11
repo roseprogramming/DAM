@@ -49,6 +49,15 @@
         background-color: #28a745;
         color: white;
       }
+      .genero{
+        display:flex;
+        justify-content: center;
+      }
+      label{
+        display:flex;
+        align-items:center;
+        
+      }
     </style>
   </head>
   <body>
@@ -56,10 +65,16 @@
 
     <div class="contenedor">
       <form action="#" method="post">
-        <input type="text" name="nombre" placeholder="Nombre" required />
-        <input type="number" name="edad" placeholder="Edad" required />
-        <input type="text" name="ocupacion" placeholder="Ocupación" required />
-        <button type="submit">Agregar Persona</button>
+        <input type="text" id="nombre" placeholder="Nombre" />
+        <input type="number" id="edad" placeholder="Edad" />
+        <input type="text" id="ocupacion" placeholder="Ocupación" />
+      <div class="genero">
+        <label><input type="radio" name="genero" value="Masculino"></input>Masculino</label>
+        <label><input type="radio" name="genero" value="Femenino"></input>Femenino</label>
+        <label><input type="radio" name="genero" value="Otros"></input>Otros</label>
+
+      </div>
+        <button id="agregar" type="button">Agregar Persona</button>
       </form>
     </div>
 
@@ -70,9 +85,10 @@
           <th>Nombre</th>
           <th>Edad</th>
           <th>Ocupación</th>
+          <th>Acción</th>
         </tr>
       </thead>
-      <tbody>
+      <tbody id="tablaPersonas">
         <tr>
           <td>Ejemplo</td>
           <td>30</td>
@@ -85,5 +101,55 @@
         </tr>
       </tbody>
     </table>
+    <script>
+      //CREAR UN VECTOR DE PERSONAS
+      let personas = []
+      //COMANDO PARA AGREGAR EN LAS VARIABLES QUE CREAMOS, EL VALOR INTRODUCIDO EN LOS ELEMENTOS DEL DOM ESPECIFICADOS, CUANDO OCURRE EL EVENTO "CLICK". capturamos valores en variables.
+      document.getElementById('agregar').addEventListener('click', function () {
+        let nombre = document.getElementById('nombre').value.trim()
+        let edad = document.getElementById('edad').value.trim()
+        let ocupacion = document.getElementById('ocupacion').value.trim()
+        //VALIDACIONES
+        if (nombre === '' || edad === '' || ocupacion === '') {
+          alert('Campos vacíos. Por favor, complete todos los campos')
+          return
+        }
+        //CREAR OBJETO PERSONA CON LAS VARIABLES COMO ATRIBUTOS NOMBRE. EDAD. OCUPACION
+        let persona = {
+          nombre: nombre,
+          edad: edad,
+          ocupacion: ocupacion
+        }
+        //AGREGAR CADA PERSONA DENTRO DEL VECTOR
+        personas.push(persona)
+        //LIMPIAR FORMULARIO
+        document.getElementById('nombre').value = ''
+        document.getElementById('edad').value = ''
+        document.getElementById('ocupacion').value = ''
+        //ACTUALLIZAR TANLA CON LA FUNCION QUE HEMOS CREADO FUERA DEL BLOQUE
+        actualizarTabla()
+      })
+      function actualizarTabla() {
+        let tabla = document.getElementById('tablaPersonas')
+        tabla.innerHTML = ''
+        for (let i = 0; i < personas.length; i++) {
+          let fila = `
+            <tr>
+              <td>${personas[i].nombre}</td>
+              <td>${personas[i].edad}</td>
+              <td>${personas[i].ocupacion}</td>
+              <td> 
+                <button onclick="borrarPersona(${i})">Eliminar</button>
+              </td>
+            </tr>
+            `
+          tabla.innerHTML += fila
+        }
+      }
+      function borrarPersona(index) {
+        personas.splice(index, 1)
+        actualizarTabla()
+      }
+    </script>
   </body>
 </html>
