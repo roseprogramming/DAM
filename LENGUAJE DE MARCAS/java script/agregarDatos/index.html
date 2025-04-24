@@ -49,14 +49,21 @@
         background-color: #28a745;
         color: white;
       }
-      .genero{
-        display:flex;
+      .genero {
+        display: flex;
         justify-content: center;
       }
-      label{
-        display:flex;
-        align-items:center;
-        
+      label {
+        display: flex;
+        align-items: center;
+      }
+      .editButton {
+        background: yellow;
+        color: black;
+      }
+      .deleteButton {
+        background: red;
+        color: black;
       }
     </style>
   </head>
@@ -68,15 +75,30 @@
         <input type="text" id="nombre" placeholder="Nombre" />
         <input type="number" id="edad" placeholder="Edad" />
         <input type="text" id="ocupacion" placeholder="Ocupación" />
-      <div class="genero">
-        <label><input type="radio" name="genero" value="Masculino"></input>Masculino</label>
-        <label><input type="radio" name="genero" value="Femenino"></input>Femenino</label>
-        <label><input type="radio" name="genero" value="Otros"></input>Otros</label>
-
-      </div>
+        <div class="genero">
+          <label
+            ><input
+              type="radio"
+              name="genero"
+              value="Masculino"
+            />Masculino</label
+          >
+          <label
+            ><input
+              type="radio"
+              name="genero"
+              value="Femenino"
+            />Femenino</label
+          >
+          <label><input type="radio" name="genero" value="Otros" />Otros</label>
+        </div>
         <button id="agregar" type="button">Agregar Persona</button>
+        <button id="modificar" type="button" style="display: none">
+          Modificar Persona
+        </button>
       </form>
     </div>
+    <button onclick="descargarXML()">Descargar XML</button>
 
     <h3>Lista de Personas</h3>
     <table>
@@ -85,30 +107,32 @@
           <th>Nombre</th>
           <th>Edad</th>
           <th>Ocupación</th>
+          <th>Género</th>
           <th>Acción</th>
         </tr>
       </thead>
-      <tbody id="tablaPersonas">
-        <tr>
-          <td>Ejemplo</td>
-          <td>30</td>
-          <td>Desarrollador</td>
-        </tr>
-        <tr>
-          <td>Persona 2</td>
-          <td>25</td>
-          <td>Diseñador</td>
-        </tr>
-      </tbody>
+      <tbody id="tablaPersonas"></tbody>
     </table>
     <script>
+      //funcion para utilizar siempre que quiera que algo ocurra al cargar la página.Evento que se dispara al cargar la pagina, lo que meta en su interior se va a ejecutar en primer lugar, independientemente de donde haya añadido ese codigo. En este caso se debe poner después de crear el vector personas.
+
       //CREAR UN VECTOR DE PERSONAS
-      let personas = []
+      let personas = JSON.parse(localStorage.getItem('personas')) || []
+      let editIndex = -1
+      window.onload = () => {
+        actualizarTabla()
+      }
       //COMANDO PARA AGREGAR EN LAS VARIABLES QUE CREAMOS, EL VALOR INTRODUCIDO EN LOS ELEMENTOS DEL DOM ESPECIFICADOS, CUANDO OCURRE EL EVENTO "CLICK". capturamos valores en variables.
       document.getElementById('agregar').addEventListener('click', function () {
         let nombre = document.getElementById('nombre').value.trim()
         let edad = document.getElementById('edad').value.trim()
         let ocupacion = document.getElementById('ocupacion').value.trim()
+        let generoSeleccionado = document.querySelector(
+          'input[name="genero"]:checked'
+        )
+        let genero = generoSeleccionado
+          ? generoSeleccionado.value
+          : 'No seleccionado'
         //VALIDACIONES
         if (nombre === '' || edad === '' || ocupacion === '') {
           alert('Campos vacíos. Por favor, complete todos los campos')
@@ -118,15 +142,16 @@
         let persona = {
           nombre: nombre,
           edad: edad,
-          ocupacion: ocupacion
+          ocupacion: ocupacion,
+          genero: genero
         }
         //AGREGAR CADA PERSONA DENTRO DEL VECTOR
         personas.push(persona)
+        guardarLocalStorage()
         //LIMPIAR FORMULARIO
-        document.getElementById('nombre').value = ''
-        document.getElementById('edad').value = ''
-        document.getElementById('ocupacion').value = ''
-        //ACTUALLIZAR TANLA CON LA FUNCION QUE HEMOS CREADO FUERA DEL BLOQUE
+        limpiarFormulario()
+
+        //ACTUALLIZAR TABLA CON LA FUNCION QUE HEMOS CREADO FUERA DEL BLOQUE
         actualizarTabla()
       })
       function actualizarTabla() {
@@ -138,8 +163,10 @@
               <td>${personas[i].nombre}</td>
               <td>${personas[i].edad}</td>
               <td>${personas[i].ocupacion}</td>
-              <td> 
-                <button onclick="borrarPersona(${i})">Eliminar</button>
+              <td>${personas[i].genero}</td>
+              <td>
+                <button class="editButton" onclick="editarPersona(${i})">Modificar</button>
+                <button class="deleteButton" onclick="borrarPersona(${i})">Eliminar</button>
               </td>
             </tr>
             `
@@ -148,7 +175,91 @@
       }
       function borrarPersona(index) {
         personas.splice(index, 1)
+        guardarLocalStorage()
         actualizarTabla()
+      }
+      //EDITAR PERSONA- CARGAR LOS DATOS GUARDADOS EN EL OBJETO PERSONA DEL VECTOR PERSONAR PARA PODER MODIFICARLOS.
+      function editarPersona(index) {
+        let persona = personas[index]
+        document.querySelector('#nombre').value = persona.nombre
+        document.querySelector('#edad').value = persona.edad
+        document.querySelector('#ocupacion').value = persona.ocupacion
+        let radios = document.querySelectorAll('input[name="genero"]')
+        radios.forEach((radio) => {
+          if (radio.value === persona.genero) radio.checked = true
+        })
+        document.querySelector('#agregar').style.display = 'none'
+        document.querySelector('#modificar').style.display = 'block'
+        editIndex = index //AQUI IGUALO EDITINDEX CON INDEX POR ESO FUNCIONA QUE SE SUSTITUYA LA PERSONA
+      }
+      //ACTUALIZAR (SUSTITUIR) LOS DATOS DEL OBJETO PERSONA MODIFICADOS EN LUGAR DE LOS QUE YA EXISTIAN Y VOLVER A MOSTRAR LOS BOTONES COMO AL INICIO.
+      document
+        .querySelector('#modificar')
+        .addEventListener('click', function () {
+          if (editIndex === -1) return
+
+          let nombre = document.getElementById('nombre').value.trim()
+          let edad = document.getElementById('edad').value.trim()
+          let ocupacion = document.getElementById('ocupacion').value.trim()
+          let generoSeleccionado = document.querySelector(
+            'input[name="genero"]:checked'
+          )
+          let genero = generoSeleccionado
+            ? generoSeleccionado.value
+            : 'No seleccionado'
+
+          //VALIDACIONES
+          if (nombre === '' || edad === '' || ocupacion === '') {
+            alert('Campos vacíos. Por favor, complete todos los campos')
+            return
+          }
+          //CREAR OBJETO PERSONA CON LAS VARIABLES COMO ATRIBUTOS NOMBRE. EDAD. OCUPACION
+          let persona = {
+            nombre: nombre,
+            edad: edad,
+            ocupacion: ocupacion,
+            genero: genero
+          }
+          personas[editIndex] = persona
+          guardarLocalStorage()
+
+          //LIMPIAR FORMULARIO
+          limpiarFormulario()
+
+          //ACTUALLIZAR TABLA CON LA FUNCION QUE HEMOS CREADO FUERA DEL BLOQUE
+          actualizarTabla()
+          document.querySelector('#agregar').style.display = 'block'
+          document.querySelector('#modificar').style.display = 'none'
+
+          editIndex = -1
+        })
+      function limpiarFormulario() {
+        document.querySelector('#nombre').value = ''
+        document.querySelector('#edad').value = ''
+        document.querySelector('#ocupacion').value = ''
+        let radios = document.querySelectorAll('input[name="genero"]')
+        radios.forEach((radio) => (radio.checked = false))
+      }
+      function guardarLocalStorage() {
+        localStorage.setItem('personas', JSON.stringify(personas))
+      }
+      function descargarXML() {
+        let xml = '<?xml version="1.0" encoding="UTF-8"?>'
+        xml += '<personas>'
+        personas.forEach((p) => {
+          xml += `<persona>
+            <nombre>${p.nombre}</nombre>
+            <edad>${p.edad}</edad>
+            <ocupacion>${p.ocupacion}</ocupacion>
+            <genero>${p.genero}</genero>
+          </persona>`
+        })
+        xml += `</personas>`
+        const blob = new Blob([xml], { type: 'application/xml' })
+        const a = document.createElement('a')
+        a.href = URL.createObjectURL(blob)
+        a.download = 'personas.xml'
+        a.click()
       }
     </script>
   </body>
