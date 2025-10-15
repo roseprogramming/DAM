@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<agenda>
+    <contacto>
+        <nombre>Ana López</nombre>
+        <direccion>Calle Falsa 123</direccion>
+        <email>ana@example.com</email>
+    </contacto>
+</agenda>

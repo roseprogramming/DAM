@@ -1,0 +1,46 @@
+{
+  // Use IntelliSense para saber los atributos posibles.
+  // Mantenga el puntero para ver las descripciones de los existentes atributos.
+  // Para más información, visite: https://go.microsoft.com/fwlink/?linkid=830387
+
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "java",
+      "name": "Test",
+      "request": "launch",
+      "mainClass": "PROGRAMACION.Test.Test",
+      "projectName": "prueba-repositorio_e7518055"
+    },
+    {
+      "type": "java",
+      "name": "Test",
+      "request": "launch",
+      "mainClass": "PROGRAMACION.Test",
+      "projectName": "prueba-repositorio_e7518055"
+    },
+    {
+      "type": "java",
+      "name": "ejemplo",
+      "request": "launch",
+      "mainClass": "PROGRAMACION.ejemplo.ejemplo",
+      "projectName": "prueba-repositorio_e7518055"
+    },
+    {
+      "type": "java",
+      "name": "ejemplo2",
+      "request": "launch",
+      "mainClass": "PROGRAMACION.ejemplo.ejemplo2",
+      "projectName": "prueba-repositorio_e7518055"
+    },
+    {
+      "type": "java",
+      "name": "Run Java File",
+      "request": "launch",
+      "mainClass": "${file}",
+      "cwd": "${workspaceFolder}",
+      "console": "integratedTerminal",
+      "shortenCommandLine": "jarmanifest"
+    }
+  ]
+}
